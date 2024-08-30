@@ -1,5 +1,5 @@
 # Turtlefun
-Having fun with turtle graphics and the very simple Euler Spiral algorithm proposed by [@Numberphile](https://www.youtube.com/@numberphile "Numberphile Profile") on [youtube](https://www.youtube.com/ "Youtube") on February 1st, 2022.
+Having fun with turtle graphics and the very simple Euler Spiral algorithm proposed by [@Numberphile](https://www.youtube.com/@numberphile "Numberphile Profile") on [youtube](https://www.youtube.com/ "Youtube") on February 1st, 2022 in their video titled [The Plotting of Beautiful Curves (Euler Spirals and Sierpiński Triangles) - Numberphile](https://www.youtube.com/watch?v=kMBj2fp52tA "The Plotting of Beautiful Curves").
 
 ```
 REPEAT 720 [

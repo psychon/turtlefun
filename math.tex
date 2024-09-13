@@ -1,0 +1,89 @@
+\documentclass[pdftex,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{hyperref}
+
+\title{Thoughts on Turtle Graphics with Euler Spirals}
+\author{Uli Schlachter}
+
+\newcommand{\rotate}{\text{rotate}}
+\newcommand{\total}{\text{total\_rotate}}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem Statement}
+TL;DR: \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4} and \url{https://github.com/schneirob/turtlefun}.
+
+We have an angle \(\theta\in\mathbb{R}\). For convenience, the number 1 will represent a whole rotation\footnote{I have
+been told that this implies \(2\pi = 1\). Go away with your radians. :-P}. Thus, e.g. \(1/4\) represents 90° in this
+representation. We now run a turtle graphics program by infinitely repeating two steps: Move forward by one unit. Rotate
+by \(i\cdot\theta\), where \(i\) is the number of steps done so far.
+
+I highly recommend the above YouTube video instead of this short descriptions. It better introduces the problem and has
+pretty pictures.
+
+The question is at which point this process becomes periodic. And whether the resulting set of points that were visit is
+finite\footnote{In the video, this is referred to as returning home.} or infinite\footnote{This is called a line in the
+video.}.
+
+\section{A closer look at the visited Angles}
+From the point of view of the turtle, the rotation done in step \(i\) is \(\rotate(i)=i\cdot\theta\). From the point of
+view of a spectator, the rotations are cumulative. This defines \(\total(i)\) as:
+\[
+\total(i)=\sum_{j=1}^i \rotate(j) = \theta\cdot\sum_{j=1}^i j = \theta\cdot i\cdot(i+1)\cdot\frac{1}{2}
+\]
+We are curious in cases where a certain image is repeated. A certain image is repeated if the same sequence of angles
+are repeated.
+I.e there must be a \(o\in\mathbb{N}\) with \(o>0\) so that\footnote{This only makes sense if e.g.\ one full rotation is
+equivalent to two rotations. Put differently, our angles actually live in \(\mathbb{R}/\mathbb{Z}\). See
+\url{https://en.wikipedia.org/wiki/Quotient_group} if you really must. \url{https://en.wikipedia.org/wiki/Circle_group}
+also seems loosely related. Surely the circle group (with multiplcaition) and \(\mathbb{R}/\mathbb{Z}\) (with addition)
+are isomorphic to each other with \(x\mapsto e^{2\cdot\pi x}\).} \(\rotate(i)=\rotate(i+o)\) for all \(i\in\mathbb{N}\). Thus, we also have
+\(0=\rotate(0)=\rotate(o)\) and so we are looking for cases where \(\rotate(o)\) is no rotation at all.
+
+\section{Irrational Numbers}
+For an irrational \(\theta\), \(\rotate\) cannot become periodic and the turtle will never return home.
+
+I suppose: The resulting images will be quite chaotic and even harder to draw without falling prey to bad rounding
+errors.
+
+\section{Rational Numbers}
+\(\theta\in\mathbb{Q}\) means that there are coprime \(p,q\in\mathbb{Z}\) so that \(\theta=\frac{p}{q}\). Then,
+\(\rotate(q)=\theta\cdot q=p\) is the first multiple of \(\theta\) representing a whole rotation. What is the total
+rotation \(\total(q)\) at this point? Insertion yields \(\total(q)=\frac{p}{q}\cdot q\cdot(q+1)\cdot \frac{1}{2}
+=p\cdot(q+1)\cdot\frac{1}{2}\).
+Let's do a case analysis.
+
+\subsection{$p$ and $q$ are both even}
+This case cannot happen since we assumed \(p\) and \(q\) to be coprime.
+
+\subsection{$q$ is odd and $p$ is either even or odd}
+In this case \(q+1\) is even so \(\total(q)=p\cdot\frac{q+1}{2}\) is a whole number.
+
+Thus, when the sequence of angles is repeated, the turtle will have finished a whole number of rotations. If, and only
+if, the turtle returned to its home at this point, will the set of visited points be finite.
+
+Conjecture: These are the lines. It might be possible that the process ends up home in step \(q\), but that seems
+unlikely and would produce an image that looks different than the usual images. I conjecture this does not actually
+occur.
+
+\subsection{$q$ is even and $p$ is odd}
+In this case \(\total(q)\) will be a whole number plus \(1/2\), because the product of two odd numbers is odd.
+
+Thus, when the sequence of angles is repeated, the turtle will have done have a rotation. The next period will then draw
+the same image again, but rotated by 180°. Afterwards, it will really repeat the same image again. Put differently,
+after exactly \(2q\) steps does the image become repeated.
+
+Conjecture: In the YouTube video, all the finite cases look like this with a spiral after half of this. Thus, I should
+look at step \(q/2\). I suppose that \(\rotate(\frac{q}{2} + i)=\rotate(\frac{q}{2} -i)\), which would be why the turtle
+traces its steps backwards in this case. At least \(\rotate(\frac{q}{2})=\theta\cdot \frac{q}{2} = p/q \cdot \frac{q}{2}
+= p/2\), so the turtle does a 180° rotation at the middle. Also, \(\rotate(\frac{q}{2} + i)+\rotate(\frac{q}{2}-i) =
+\theta(\frac{q}{2}+i + \frac{q}{2}-i) = \theta(q) = 2\rotate(\frac{q}{2})\).  Since \(\rotate(\frac{q}{2})\) is half a
+rotation, this means the two angles sum to a full circle. Does this already prove that the turtle follows its steps
+backwards?
+
+\end{document}

@@ -1,17 +1,22 @@
 """srce/turtle.py"""
 
-import colorcet as cc
+#import colorcet as cc
 from configparser import ConfigParser
 import math
 import os
-from PIL import Image
-from PIL.ImageDraw import Draw
-from prettytable import PrettyTable
+#from PIL import Image
+#from PIL.ImageDraw import Draw
+#from prettytable import PrettyTable
 import sys
 from time import perf_counter
 
-from loguru import logger
+#from loguru import logger
 from typing import Union, Tuple
+import logging
+logger = logging.getLogger(__name__)
+def logger_trace(*x):
+    pass
+logger.trace = logger_trace
 
 from .qualityldraw import QualityDraw
 
@@ -27,7 +32,7 @@ class TurtleHome:
         self.is_home = True
         self.home_id_count = {}
         
-        self.color_palette = cc.b_glasbey_category10
+        self.color_palette = ["#000000"] # cc.b_glasbey_category10
         self.current_color = 0
         self.color = None
         self._set_color()
@@ -311,10 +316,19 @@ class Turtle:
         for iteration in range(iterate):
             self.rotmov(iteration * theta, step)
             
+            theta_change = iteration * theta % 360
+            print(f"After {iteration}, ({self.xpos}, {self.ypos}) with {self.angle} after change of {theta_change}")
+            if theta_change == 0:
+                print("Z" * 30)
+            if self.angle == 0:
+                print("Y" * 30)
+            if self.angle == 180:
+                print("X" * 30)
             if abs(fromangle - self.angle) < self.precision_angle:
                 if abs(fromxpos - self.xpos) < self.precision_pos and \
                     abs(fromypos - self.ypos) < self.precision_pos:
                         logger.info("Euler spiral has returned to origin.")
+                        print("Origin!")
                         origin = True
                         break
         timer_stop = perf_counter()
@@ -428,3 +442,11 @@ class Turtle:
             self.last_config.write(open(config_filename, "w"))
         
         return True
+
+
+if __name__ == "__main__":
+    t =Turtle(draw=False, home=10)
+    for theta in [15, 16]:
+        print(f"theta={theta}")
+        t.euler_spiral(theta, 50, 1)
+        print()

@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{hyperref}
+\usepackage{color}
 
 \title{Thoughts on Turtle Graphics with Euler Spirals}
 \author{Uli Schlachter}
@@ -51,9 +52,11 @@ For an irrational \(\theta\), \(\rotate\) cannot become periodic and the turtle 
 I suppose: The resulting images will be quite chaotic and even harder to draw without falling prey to bad rounding
 errors.
 
-\section{Rational Numbers}
+\section{Rational Numbers (Old and Wrong)}
 \(\theta\in\mathbb{Q}\) means that there are coprime \(p,q\in\mathbb{Z}\) so that \(\theta=\frac{p}{q}\). Then,
-\(\rotate(q)=\theta\cdot q=p\) is the first multiple of \(\theta\) representing a whole rotation. What is the total
+\(\rotate(q)=\theta\cdot q=p\) is the \textcolor{red}{first}\footnote{This is where this section is wrong. See the next
+section for the correct(?) computation. The rest of this section still seems to be true.} multiple of \(\theta\)
+representing a whole rotation. What is the total
 rotation \(\total(q)\) at this point? Insertion yields \(\total(q)=\frac{p}{q}\cdot q\cdot(q+1)\cdot \frac{1}{2}
 =p\cdot(q+1)\cdot\frac{1}{2}\).
 Let's do a case analysis.
@@ -85,5 +88,17 @@ traces its steps backwards in this case. At least \(\rotate(\frac{q}{2})=\theta\
 \theta(\frac{q}{2}+i + \frac{q}{2}-i) = \theta(q) = 2\rotate(\frac{q}{2})\).  Since \(\rotate(\frac{q}{2})\) is half a
 rotation, this means the two angles sum to a full circle. Does this already prove that the turtle follows its steps
 backwards?
+
+\section{Rational Numbers (New and less developed)}
+\(\theta\in\mathbb{Q}\) means that there are numbers \(p,q\in\mathbb{Z}\) so that \(\theta=\frac{p}{q}\).
+For \(\rotate(i)=\frac{p}{q}\cdot i\) to be a whole number, \(p\cdot i\) must be a multiple of \(q\). So,
+\(i=\frac{q}{\text{gcd}(p,q)}\) is the first time this happens. We thus have:
+\[
+\rotate(i)=\frac{p}{q}\cdot\frac{q}{\text{gcd}(p,q)}=\frac{p}{\text{gcd}(p,q)}
+\]
+Let \(a,b\in\mathbb{Z}\) be coprime numbers so that \(\frac{a}{b}=\frac{p}{\text{gcd}(p,q)}\).
+
+From here on, one can continue like in the section above. The only difference is that this now happens at an earlier step
+of the computation.
 
 \end{document}

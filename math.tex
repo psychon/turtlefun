@@ -104,6 +104,33 @@ What does this mean? It means that after turning around, the turtle will follow 
 q, it will arrive back at the place where it started, but turned by 180°. Then, it traces the same path in the opposite
 direction and at step \(2\cdot q\) it will arrive back at its starting position with its starting angle.
 
+\section{Taking the Position into Account}
+Let us represent the position of the turtle in step \(i\) with \(p_i\in\mathbb{C}\) and its direction with
+\(d_i\in\mathbb{C}\) with \(|d_i|=1\), i.e.\ \(d_i\) is a point on the unit circle. Then, at step \(i+1\), the turtle
+will do:
+\begin{align*}
+p_{i+1} &= p_i + d_i &
+d_{i+1} &= d_i \cdot e^{i\cdot \theta\cdot 2\pi}
+\end{align*}
+Defining \(p_0=0\) and \(d_0=1=e^0\), we can arrive at:
+\[
+d_i = e^{\theta\cdot 2\pi\cdot \sum_{j=0}^i j}
+= e^{\theta\cdot i\cdot(i+1)\frac{1}{2}\cdot 2\pi}
+\]
+This means for the position:
+\[
+p_i = \sum_{j=0}^i d_j
+= \sum_{j=0}^i e^{\theta\cdot j\cdot(j+1)\frac{1}{2}\cdot 2\pi}
+= e^{\theta\cdot \pi\cdot\prod_{j=0}^i j\cdot (j+1) }
+= e^{\theta\cdot \pi\cdot 2\cdot i! \cdot (i+1)! }
+= e^{\theta\cdot \pi\cdot 2\cdot (i!)^2 \cdot (i+1) }
+\]
+We arrive at an expression containing a squared factorial in the exponent. And if we want to know when the turtle
+returns home, we would have to solve this whole expression for being equal to zero. I have no good ideas on how to
+continue here.
+
+One good idea: Test whether this formula actually holds. I have only derived it, but never tested it.
+
 \section{Acknowledgements}
 Thanks a lot to Schneirob for producing \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4}. This made it really easy for
 me to get an overview over things and identify some interesting angels. Then I used

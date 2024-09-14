@@ -57,17 +57,25 @@ errors.
 \(\rotate(q)=\theta\cdot q=p\) is the first multiple of \(\theta\) representing a whole rotation. What is the total
 rotation \(\total(q)\) at this point? Insertion yields \(\total(q)=\frac{p}{q}\cdot q\cdot(q+1)\cdot \frac{1}{2}
 =p\cdot(q+1)\cdot\frac{1}{2}\).
-Let's do a case analysis.
+Let's do a case analysis on whether \(q\) is odd/even. But first, a Lemma.
 
-\subsection{$q$ is odd}
-In this case \(q+1\) is even so \(\total(q)=p\cdot\frac{q+1}{2}\) is a whole number.
+\subsection{A Lemma}
+We want to show that\footnote{Please excuse the abuse of notation. Of course, \(\rotate\) is only defined for natural
+number arguments. Thus, if \(q\) is odd, \(i\) must actually be an integer plus a half.}
+\(\rotate(\frac{q}{2}+i)=-\rotate(\frac{q}{2}-i)\).
 
-Thus, when the sequence of angles is repeated, the turtle will have finished a whole number of rotations. If, and only
-if, the turtle returned to its home at this point, will the set of visited points be finite.
+We start with arguing that \(\rotate(q)=0\), i.e. is actually a multiple of full rotations and full rotations do not
+influence the state\footnote{More mathematically: We are still working in \(\mathbb{R}/\mathbb{Z}\).}. By insertion,
+\(\rotate(q)=\theta\cdot q=\frac{p}{q}\cdot q=p\). \(p\) is a whole number by assumption.
 
-Conjecture: These are the lines. It might be possible that the process ends up home in step \(q\), but that seems
-unlikely and would produce an image that looks different than the usual images. I conjecture this does not actually
-occur.
+We now start with the right hand side of what we want to show and cleverly add zero to it:
+\[
+-\rotate(\frac{q}{2}-i)
+=\rotate(q)-\rotate(\frac{q}{2}-i)
+=\theta\cdot\left(q-(\frac{q}{2}-i)\right)
+=\theta\cdot\left(\frac{q}{2}+i)\right)
+=\rotate(\frac{q}{2}+i)
+\]
 
 \subsection{$q$ is even}
 If \(q\) is even, then \(p\) must be odd, because we are assuming these two numbers to be coprime.
@@ -85,48 +93,62 @@ Let us look at what happens around step \(q/2\). We have \(\rotate(\frac{q}{2})=
 = \frac{p}{q} \cdot \frac{q}{2} = p/2\). Since \(p\) is a whole number, this must be half a rotation, i.e.\ 180° and the
 turtle turns around.
 
-What does the turtle do after turning around? Let us look at step \(\frac{q}{2}+i\) and do some mathmagical rearranging
-on
-\(
-\rotate\left(\frac{q}{2}+i\right)
-=\theta\left(\frac{q}{2}+i\right)
-\):
-\[
-\rotate\left(\frac{q}{2}+i\right)
-=\theta\left(q-\left(\frac{q}{2}-i\right)\right)
-=2\theta\cdot \frac{q}{2} - \theta\cdot\left(\frac{q}{2}-i\right)
-=2\rotate\left(\frac{q}{2}\right)-\rotate\left(\frac{q}{2}-i\right)
-\]
-Since \(\rotate(\frac{q}{2})\) is half a rotation, \(2\cdot\rotate(\frac{q}{2})\) must be a whole rotation, i.e.\ 0°. Thus,
-we arrive at \(\rotate(\frac{q}{2}+i)=-\rotate(\frac{q}{2}-i)\).
+What does the turtle do after turning around?
+By the lemma above, the turtle traces its steps backwards afterwards. Flipping the sign of the angle really just swaps
+the meanings of "turn left" and "turn right".
 
 What does this mean? It means that after turning around, the turtle will follow its steps backwards home! In step
 q, it will arrive back at the place where it started, but turned by 180°. Then, it traces the same path in the opposite
 direction and at step \(2\cdot q\) it will arrive back at its starting position with its starting angle.
 
+\subsection{$q$ is odd}
+In this case \(q+1\) is even so \(\total(q)=p\cdot\frac{q+1}{2}\) is a whole number.
+
+Thus, when the sequence of angles is repeated, the turtle will have finished a whole number of rotations. If, and only
+if, the turtle returned to its home at this point, will the set of visited points be finite.
+
+Conjecture: These are the lines. It might be possible that the process ends up home in step \(q\), but that seems
+unlikely and would produce an image that looks different than the usual images. I conjecture this does not actually
+occur.
+
+It would be interesting to see what happens around steps \(q/2-1/2\) and \(q/2+1/2\), because the lemma above still
+holds. The turtle will draw the inverse of the path it did until here. There was just no 180° degree rotation like in
+the case of \(q\) being even, so this does not lead back to the starting position.
+
 \section{Taking the Position into Account}
-Let us represent the position of the turtle in step \(i\) with \(p_i\in\mathbb{C}\) and its direction with
-\(d_i\in\mathbb{C}\) with \(|d_i|=1\), i.e.\ \(d_i\) is a point on the unit circle. Then, at step \(i+1\), the turtle
+Let us represent the position of the turtle in step \(\ell\) with \(p_\ell\in\mathbb{C}\) and its direction with
+\(d_\ell\in\mathbb{C}\) with \(|d_\ell|=1\), i.e.\ \(d_\ell\) is a point on the unit circle. Then, at step \(\ell+1\), the turtle
 will do:
 \begin{align*}
-p_{i+1} &= p_i + d_i &
-d_{i+1} &= d_i \cdot e^{i\cdot \theta\cdot 2\pi}
+p_{\ell+1} &= p_\ell + d_\ell &
+d_{\ell+1} &= d_\ell \cdot e^{\ell\cdot \theta\cdot 2\cdot \pi i}
 \end{align*}
 Defining \(p_0=0\) and \(d_0=1=e^0\), we can arrive at:
 \[
-d_i = e^{\theta\cdot 2\pi\cdot \sum_{j=0}^i j}
-= e^{\theta\cdot i\cdot(i+1)\frac{1}{2}\cdot 2\pi}
-= e^{\theta\cdot i\cdot(i+1)\cdot \pi}
+d_\ell = e^{\theta\cdot 2\pi i\cdot \sum_{k=0}^\ell k}
+= e^{\theta\cdot 2\pi i \cdot \ell\cdot(\ell+1)\frac{1}{2}}
+= e^{\theta\cdot \pi i \cdot \ell\cdot(\ell+1)}
 \]
 This means for the position:
 \[
-p_i = \sum_{j=0}^i d_j
-= \sum_{j=0}^i e^{\theta\cdot j\cdot(j+1)\cdot\pi}
-= e^{\theta\cdot\pi}\cdot \sum_{j=0}^i e^{j\cdot(j+1)}
+p_\ell = \sum_{k=0}^\ell d_k
+= \sum_{k=0}^\ell e^{\theta\cdot \pi i\cdot k\cdot(k+1)}
+= e^{\theta\cdot\pi i}\cdot \sum_{k=0}^\ell e^{k\cdot(k+1)}
 \]
 I have no good ideas on how to continue here.
 
 One good idea: Test whether this formula actually holds. I have only derived it, but never tested it.
+
+Another good idea: Try to find instances where \(d_k+d_\ell=0\), i.e. directions undo each other. The lemma above could
+actually help here for inspiration. With \(\theta=p/q\) we immediately derive the lemma again:
+\[
+-e^{(\frac{q}{2}-j)\cdot\frac{p}{q}\cdot 2\pi i}
+= -e^{\frac{q}{2}\cdot\frac{p}{q}\cdot 2\pi i} \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
+= -\left(e^{\pi i}\right)^p \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
+= -\left(-1\right)^p \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
+\]
+Uhm\dots okay, I am not quite sure what I just derived and I gotta go. But this did not produce the Lemma it should
+have.
 
 \section{Acknowledgements}
 Thanks a lot to Schneirob for producing \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4}. This made it really easy for

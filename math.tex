@@ -3,13 +3,14 @@
 \usepackage[T1]{fontenc}
 \usepackage{amssymb}
 \usepackage{amstext}
+\usepackage{amsmath}
 \usepackage{hyperref}
 
 \title{Thoughts on Turtle Graphics with Euler Spirals}
 \author{Uli Schlachter}
 
-\newcommand{\rotate}{\text{rotate}}
-\newcommand{\total}{\text{total\_rotate}}
+\DeclareMathOperator{\rotate}{rotate}
+\DeclareMathOperator{\total}{total\_rotate}
 
 \begin{document}
 
@@ -58,10 +59,7 @@ rotation \(\total(q)\) at this point? Insertion yields \(\total(q)=\frac{p}{q}\c
 =p\cdot(q+1)\cdot\frac{1}{2}\).
 Let's do a case analysis.
 
-\subsection{$p$ and $q$ are both even}
-This case cannot happen since we assumed \(p\) and \(q\) to be coprime.
-
-\subsection{$q$ is odd and $p$ is either even or odd}
+\subsection{$q$ is odd}
 In this case \(q+1\) is even so \(\total(q)=p\cdot\frac{q+1}{2}\) is a whole number.
 
 Thus, when the sequence of angles is repeated, the turtle will have finished a whole number of rotations. If, and only
@@ -71,20 +69,40 @@ Conjecture: These are the lines. It might be possible that the process ends up h
 unlikely and would produce an image that looks different than the usual images. I conjecture this does not actually
 occur.
 
-\subsection{$q$ is even and $p$ is odd}
-In this case \(\total(q)\) will be a whole number plus \(1/2\), because the product of two odd numbers is odd.
+\subsection{$q$ is even}
+If \(q\) is even, then \(p\) must be odd, because we are assuming these two numbers to be coprime.
+In this case\footnote{More detailed: Let \(a,b\in\mathbb{Z}\) be numbers so that \(q=2a\) and \(p=2b+1\). We have
+\(\total(q)=p\cdot(q+1)\cdot\frac{1}{2}=(2b+1)\cdot(2a+1)\cdot\frac{1}{2}=2ab+a+b+\frac{1}{2}\). Everything but 1/2 is
+in \(\mathbb{Z}\).}
+\(\total(q)\) will be a whole number plus \(1/2\), because the product of two odd numbers is odd.
 
-Thus, when the sequence of angles is repeated, the turtle will have done have a rotation. The next period will then draw
+Thus, when the sequence of angles is repeated, the turtle will have turned in the opposite direction that it started
+from. The next period will then draw
 the same image again, but rotated by 180°. Afterwards, it will really repeat the same image again. Put differently,
 after exactly \(2q\) steps does the image become repeated.
 
-Conjecture: In the YouTube video, all the finite cases look like this with a spiral after half of this. Thus, I should
-look at step \(q/2\). I suppose that \(\rotate(\frac{q}{2} + i)=\rotate(\frac{q}{2} -i)\), which would be why the turtle
-traces its steps backwards in this case. At least \(\rotate(\frac{q}{2})=\theta\cdot \frac{q}{2} = p/q \cdot \frac{q}{2}
-= p/2\), so the turtle does a 180° rotation at the middle. Also, \(\rotate(\frac{q}{2} + i)+\rotate(\frac{q}{2}-i) =
-\theta(\frac{q}{2}+i + \frac{q}{2}-i) = \theta(q) = 2\rotate(\frac{q}{2})\).  Since \(\rotate(\frac{q}{2})\) is half a
-rotation, this means the two angles sum to a full circle. Does this already prove that the turtle follows its steps
-backwards?
+Let us look at what happens around step \(q/2\). We have \(\rotate(\frac{q}{2})=\theta\cdot \frac{q}{2}
+= \frac{p}{q} \cdot \frac{q}{2} = p/2\). Since \(p\) is a whole number, this must be half a rotation, i.e.\ 180° and the
+turtle turns around.
+
+What does the turtle do after turning around? Let us look at step \(\frac{q}{2}+i\) and do some mathmagical rearranging
+on
+\(
+\rotate\left(\frac{q}{2}+i\right)
+=\theta\left(\frac{q}{2}+i\right)
+\):
+\[
+\rotate\left(\frac{q}{2}+i\right)
+=\theta\left(q-\left(\frac{q}{2}-i\right)\right)
+=2\theta\cdot \frac{q}{2} - \theta\cdot\left(\frac{q}{2}-i\right)
+=2\rotate\left(\frac{q}{2}\right)-\rotate\left(\frac{q}{2}-i\right)
+\]
+Since \(\rotate(\frac{q}{2})\) is half a rotation, \(2\cdot\rotate(\frac{q}{2})\) must be a whole rotation, i.e.\ 0°. Thus,
+we arrive at \(\rotate(\frac{q}{2}+i)=-\rotate(\frac{q}{2}-i)\).
+
+What does this mean? It means that after turning around, the turtle will follow its steps backwards home! In step
+q, it will arrive back at the place where it started, but turned by 180°. Then, it traces the same path in the opposite
+direction and at step \(2\cdot q\) it will arrive back at its starting position with its starting angle.
 
 \section{Acknowledgements}
 Thanks a lot to Schneirob for producing \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4}. This made it really easy for

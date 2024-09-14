@@ -116,18 +116,15 @@ Defining \(p_0=0\) and \(d_0=1=e^0\), we can arrive at:
 \[
 d_i = e^{\theta\cdot 2\pi\cdot \sum_{j=0}^i j}
 = e^{\theta\cdot i\cdot(i+1)\frac{1}{2}\cdot 2\pi}
+= e^{\theta\cdot i\cdot(i+1)\cdot \pi}
 \]
 This means for the position:
 \[
 p_i = \sum_{j=0}^i d_j
-= \sum_{j=0}^i e^{\theta\cdot j\cdot(j+1)\frac{1}{2}\cdot 2\pi}
-= e^{\theta\cdot \pi\cdot\prod_{j=0}^i j\cdot (j+1) }
-= e^{\theta\cdot \pi\cdot 2\cdot i! \cdot (i+1)! }
-= e^{\theta\cdot \pi\cdot 2\cdot (i!)^2 \cdot (i+1) }
+= \sum_{j=0}^i e^{\theta\cdot j\cdot(j+1)\cdot\pi}
+= e^{\theta\cdot\pi}\cdot \sum_{j=0}^i e^{j\cdot(j+1)}
 \]
-We arrive at an expression containing a squared factorial in the exponent. And if we want to know when the turtle
-returns home, we would have to solve this whole expression for being equal to zero. I have no good ideas on how to
-continue here.
+I have no good ideas on how to continue here.
 
 One good idea: Test whether this formula actually holds. I have only derived it, but never tested it.
 

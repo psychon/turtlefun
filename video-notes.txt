@@ -1,0 +1,61 @@
+Some notes on intersting images
+
+Theta=p/q
+
+Even q: returns
+2 "circles": 1 2 3 4 5 6 9 10 12 15 ...
+theta=7°=7/360     has 8 "circles"
+theta=11°=11/360   has 12 "circles"
+theta=13°=13/360   has 14 "circles"
+theta=14°=7/180    has 8 "circles"
+theta=17°=17/360   has 18 "circles"
+theta=19°=17/360   has 20 "circles"
+theta=21°=7/120    has 8 "circles"    !!!
+theta=22°=11/180   has 12 "circles"
+theta=23°=23/180   has 24 "circles"
+theta=25°=5/72     has 6 "circles"
+theta=26°=13/180   has 14 "circles"
+theta=27°=3/40     has 4 "circles"
+theta=28°=7/90     has 8 "circles"
+theta=29°=29/360   has 30 "circles"
+theta=31°=31/360   has 32 "circles"
+theta=33°=11/120   has 12 "circles"
+theta=34°=17/180   has 18 "circles"
+theta=35°=7/72     has 8 "circles"
+theta=37°=37/360   has 38 "circles"
+theta=38°=19/180   has 20 "circles"
+theta=39°=13/120   has 14 "circles"
+theta=41°=41/360   too lazy to count
+theta=42°=7/60     has 8 "circles"
+theta=43°=43/360   too lazy to count
+theta=44°=11/90    has 12 "circles"
+theta=46°=23/180   has 24 "circles"
+theta=47°=43/360   too lazy to count
+theta=49°=49/360   too lazy to count
+theta=50°=5/36     has 6 "circles"
+At this point the circles become too weird to really identify. So I stopped at 51°.
+
+Conjecture: There are p+1 "circles for x/360 or x/180. There are 
+
+Odd q: Line?
+Look at difference if p is odd/even
+
+Both odd:
+theta=8°=8/360=1/45
+theta=24°=1/15
+theta=40°=1/9
+Line based on only one "circles" 
+
+q odd, p even
+theta=16°=16/360=2/45 Line based on two inverse copies of "circles"
+theta=32°=4/46 Line based on four individual "circles"
+theta=48°=2/15 Line based on two individual "circles"
+theta=56°=7/45 Cannot really see
+theta=64°=8/45 Cannot really see
+
+I totally stopped at 72°=1/5
+
+
+
+
+theta=1.000001° I think this one is a rounding error. The "am I home?" check incorrectly triggered.

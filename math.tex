@@ -4,11 +4,13 @@
 \usepackage{amssymb}
 \usepackage{amstext}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{hyperref}
 
 \title{Thoughts on Turtle Graphics with Euler Spirals}
 \author{Uli Schlachter}
 
+\newtheorem{lemma}{Lemma}
 \DeclareMathOperator{\rotate}{rotate}
 \DeclareMathOperator{\total}{total\_rotate}
 
@@ -121,7 +123,8 @@ Let us represent the position of the turtle in step \(\ell\) with \(p_\ell\in\ma
 will do:
 \begin{align*}
 p_{\ell+1} &= p_\ell + d_\ell &
-d_{\ell+1} &= d_\ell \cdot e^{\ell\cdot \theta\cdot 2\cdot \pi i}
+c_{\ell+1} &= e^{(\ell+1)\cdot \theta\cdot 2\cdot \pi i} &
+d_{\ell+1} &= d_ell\cdot c_{\ell+1} = d_\ell \cdot e^{\ell\cdot \theta\cdot 2\cdot \pi i}
 \end{align*}
 Defining \(p_0=0\) and \(d_0=1=e^0\), we can arrive at:
 \[
@@ -133,22 +136,53 @@ This means for the position:
 \[
 p_\ell = \sum_{k=0}^\ell d_k
 = \sum_{k=0}^\ell e^{\theta\cdot \pi i\cdot k\cdot(k+1)}
-= e^{\theta\cdot\pi i}\cdot \sum_{k=0}^\ell e^{k\cdot(k+1)}
 \]
+
+Let's do some math and re-derive the Lemma above\footnote{Committing again an abuse of notation since \(c_\ell\) was
+only meant to be defined for \(\ell\in\mathbb{N}\)}:
+\begin{lemma}
+\(c_{\frac{q}{2}-k} \cdot c_{\frac{q}{2}+k}=1\) for any \(k\in\mathbb{N}\). This means that the two rotations are
+inverse to each other.
+\end{lemma}
+\begin{proof}
+\begin{align*}
+c_{\frac{q}{2}-k} \cdot c_{\frac{q}{2}+k}
+&=e^{(\frac{q}{2}-k)\cdot \theta\cdot 2\cdot \pi i} \cdot e^{(\frac{q}{2}+k)\cdot \theta\cdot 2\cdot \pi i}
+=e^{(\frac{q}{2}-k)\cdot \theta\cdot 2\cdot \pi i + (\frac{q}{2}+k)\cdot \theta\cdot 2\cdot \pi i}
+=e^{q\cdot \theta\cdot 2\cdot \pi i} \\
+&=e^{q\cdot \frac{p}{q}\cdot 2\cdot \pi i} 
+=e^{p\cdot 2\cdot \pi i} 
+=1^p
+=1
+\end{align*}
+\end{proof}
+Now we can show that the turtle returns to its starting orientation for odd \(q\). For even \(q\), it will face in the opposite direction.
+\begin{lemma}
+In general, \(d_q=(-1)^p\).
+For even \(q\), this means that \(d_q=-1\).
+\end{lemma}
+\begin{proof}
+Let us start with \(d_q\) as the product of the individual changes in directions. This product is then re-arranged into
+certain combinations.
+\begin{align*}
+d_q
+&= \prod_{\ell=0}^q c_\ell
+= c_{\frac{q}{2}} \cdot \prod_{\ell=1}^{\frac{q}{2}-1} c_{\frac{q}{2}+\ell} \cdot c_{\frac{q}{2}-\ell}
+\intertext{At this point the lemma can be applied and it only remains to compute \(c_{\frac{q}{2}}\):}
+&= c_{\frac{q}{2}} \cdot \prod_{\ell=1}^{\frac{q}{2}-1} 1
+= c_{\frac{q}{2}}
+= e^{\frac{q}{2}\cdot \theta\cdot 2\cdot \pi i}
+= e^{\frac{q}{2}\cdot \frac{p}{q}\cdot 2\cdot \pi i}
+= e^{p\cdot \pi i}
+= \left(e^{\pi i}\right)^p
+= (-1)^p
+\end{align*}
+Since we assume that \(p\) and \(q\) are coprime, if \(q\) is even, then \(p\) must be odd. In this case, we arrive at
+\(d_q=-1\). If \(q\) is odd, then \(p\) can be odd or even and we cannot conclude anything.
+\end{proof}
 I have no good ideas on how to continue here.
 
-One good idea: Test whether this formula actually holds. I have only derived it, but never tested it.
-
-Another good idea: Try to find instances where \(d_k+d_\ell=0\), i.e. directions undo each other. The lemma above could
-actually help here for inspiration. With \(\theta=p/q\) we immediately derive the lemma again:
-\[
--e^{(\frac{q}{2}-j)\cdot\frac{p}{q}\cdot 2\pi i}
-= -e^{\frac{q}{2}\cdot\frac{p}{q}\cdot 2\pi i} \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
-= -\left(e^{\pi i}\right)^p \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
-= -\left(-1\right)^p \cdot e^{-j\cdot\frac{p}{q}\cdot 2\pi i}
-\]
-Uhm\dots okay, I am not quite sure what I just derived and I gotta go. But this did not produce the Lemma it should
-have.
+One good idea: Test whether these results actually hold. I have only derived them, but never tested them.
 
 \section{Acknowledgements}
 Thanks a lot to Schneirob for producing \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4}. This made it really easy for

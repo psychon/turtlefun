@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \title{Thoughts on Turtle Graphics with Euler Spirals}
 \author{Uli Schlachter}
@@ -183,6 +184,31 @@ Since we assume that \(p\) and \(q\) are coprime, if \(q\) is even, then \(p\) m
 I have no good ideas on how to continue here.
 
 One good idea: Test whether these results actually hold. I have only derived them, but never tested them.
+
+\section{The Continuous Case}
+Instead of having two discrete steps (move forward one step, rotate, repeat), one could also consider a continuous
+setting: While moving forwards, the turtle rotates at the same time. In the discrete times, the rotation increases
+linearly with the number of steps. The continuous equivalent would be \(\rotate(t)=t\cdot\theta\), which leads to a
+direction at time \(t\) of \(\total(t)=\int_{x=0}^t\rotate(t)\,\text{d}x=t^2\theta/2\).
+
+More interesting is the position which is a complex number starting at \(p(0)=0\) and evolving via:
+\[
+\dot{p}(t) = e^{2\pi i \cdot \total(t)} = e^{\pi i \cdot t^2\theta}
+\]
+The author of these lines asked
+\href{https://www.wolframalpha.com/input?i=p%28t%29+%3D+integrate+e%5E%28pi+*+i+*+x%5E2+*+phi%29+from+x%3D0+to+t}{Worlfram Alpha}
+and got the following solution, where erf is the so-called error function\footnote{Which the author never
+encountered before}:
+\[
+p(t) = -\frac{\sqrt[4]{-1}\;\text{erf}((-1)^{\frac{3}{4}}\sqrt{\pi}t\sqrt{\phi})}{2\sqrt{\phi}}
+\]
+This can now be
+\href{https://www.wolframalpha.com/input?i=parametric+plot%5BReal%28-%28%28-1%29%5E%281%2F4%29+erf%28%28-1%29%5E%283%2F4%29+sqrt%28pi%29+t+sqrt%28pi%2F2%29%29%29%2F%282+sqrt%28pi%2F2%29%29%29%2C+Imag%28-%28%28-1%29%5E%281%2F4%29+erf%28%28-1%29%5E%283%2F4%29+sqrt%28pi%29+t+sqrt%28pi%2F2%29%29%29%2F%282+sqrt%28pi%2F2%29%29%29%5D+for+t%3D0..20}{plotted},
+for example with \(\phi=90^\circ=\pi/2\) and \(t\) from 0 to 1, and then from 0 to 20:
+
+\includegraphics[width=\textwidth]{continuous1.png}
+
+\includegraphics[width=\textwidth]{continuous20.png}
 
 \section{Acknowledgements}
 Thanks a lot to Schneirob for producing \url{https://www.youtube.com/watch?v=Fx1d8x0gIu4}. This made it really easy for
